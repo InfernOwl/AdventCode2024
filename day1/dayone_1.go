@@ -20,24 +20,17 @@ func main() {
 	//Open the input file
 	dat, err := os.Open("../inputs/dayone_1.txt")
 	check(err)
-	reader := bufio.NewReader(dat)
+	reader := bufio.NewScanner(dat)
 
 	//Define the Datasets for each list and distanceTotal
 	var lList []int
 	var rList []int
-	total := 0
+	total := 0.0
 
 	//Loop to read lines and place values in lists
-	stopper := "go" //ironic
-
-	for stopper != "stop" {
-		line, err := reader.ReadString('\n')
-		if err != nil {
-			stopper = "stop"
-			break
-		}
-
-		check(err)
+	for reader.Scan() {
+		line := reader.Text()
+		
 		saniString := strings.Fields(line)
 		lStr, err := strconv.Atoi(saniString[0])
 		check(err)
@@ -59,8 +52,8 @@ func main() {
 		x, lList = lList[0], lList[1:]
 		y, rList = rList[0], rList[1:]
 
-		total = total + int(math.Floor(math.Abs(float64(x-y))))
+		total = total + math.Abs(float64(x-y))
 	}
 
-	fmt.Println(total)
+	fmt.Println(int(total))
 }
