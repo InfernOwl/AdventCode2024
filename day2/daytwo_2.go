@@ -1,4 +1,4 @@
-package main1
+package main
 
 import (
 	"bufio"
@@ -20,10 +20,10 @@ func adjDifference(x int, y int) bool {
 	// 0 and less than 4 away from each other
 
 	dist := int(math.Abs(float64(x - y)))
-	return dist > 0 && dist < 4
+	return dist < 4
 }
 
-func isReportSafe(report []string) bool {
+func isReportSafe(report []string, secondChance bool) bool {
 
 	isAsc := false  //Ascending check
 	isDesc := false //Descending check
@@ -38,7 +38,13 @@ func isReportSafe(report []string) bool {
 
 		// Check adjDifference
 		if !adjDifference(curr, next) {
-			return false
+			fmt.Println(report, secondChance)
+			if secondChance {
+				report = append(report[:index+1], report[index+2:]...)
+				return isReportSafe(report, false)
+			} else {
+				return false
+			}
 		}
 
 		// Determine Asc or Desc
@@ -50,16 +56,37 @@ func isReportSafe(report []string) bool {
 				isAsc = true
 			} else {
 				// If neither greater nor less than
-				// Report is not safe
-				return false
+				// Report is not safe is this is the second time
+
+				fmt.Println(report, secondChance)
+				if secondChance {
+					report = append(report[:index+1], report[index+2:]...)
+					return isReportSafe(report, false)
+				} else {
+					return false
+				}
+
 			}
 		} else if isAsc {
 			if curr > next {
-				return false
+
+				fmt.Println(report, secondChance)
+				if secondChance {
+					report = append(report[:index+1], report[index+2:]...)
+					return isReportSafe(report, false)
+				} else {
+					return false
+				}
 			}
 		} else if isDesc {
 			if curr < next {
-				return false
+				fmt.Println(report, secondChance)
+				if secondChance {
+					report = append(report[:index+1], report[index+2:]...)
+					return isReportSafe(report, false)
+				} else {
+					return false
+				}
 			}
 		}
 	}
@@ -82,7 +109,7 @@ func main() {
 		line := reader.Text()
 		saniString := strings.Fields(line)
 
-		if isReportSafe(saniString) {
+		if isReportSafe(saniString, true) {
 			safety++ //If report is safe increase tracker
 		}
 	}
