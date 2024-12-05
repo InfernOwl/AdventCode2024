@@ -30,7 +30,7 @@ func main() {
 	//Loop to read lines and place values in lists
 	for reader.Scan() {
 		line := reader.Text()
-		
+
 		saniString := strings.Fields(line)
 		lStr, err := strconv.Atoi(saniString[0])
 		check(err)
