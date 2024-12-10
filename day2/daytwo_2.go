@@ -20,16 +20,31 @@ func adjDifference(x int, y int) bool {
 	// 0 and less than 4 away from each other
 
 	dist := int(math.Abs(float64(x - y)))
-	return dist < 4
+	return dist > 0 && dist < 4
 }
 
-func isReportSafe(report []string, secondChance bool) bool {
+func removeIndex(arr []string, pos int) []string {
+	newArr := []string{}
+	k := 0
+	for i := 0; i < (len(arr)); {
+		if i != pos {
+			newArr = append(newArr, arr[k])
+			k++
+		} else {
+			k++
+		}
+		i++
+	}
+
+	return newArr
+}
+
+func isReportSafe(report []string) bool {
 
 	isAsc := false  //Ascending check
 	isDesc := false //Descending check
 
 	for index := range len(report) - 1 {
-
 		curr, currErr := strconv.Atoi(report[index])
 		next, nextErr := strconv.Atoi(report[index+1])
 
@@ -38,13 +53,7 @@ func isReportSafe(report []string, secondChance bool) bool {
 
 		// Check adjDifference
 		if !adjDifference(curr, next) {
-			fmt.Println(report, secondChance)
-			if secondChance {
-				report = append(report[:index+1], report[index+2:]...)
-				return isReportSafe(report, false)
-			} else {
-				return false
-			}
+			return false
 		}
 
 		// Determine Asc or Desc
@@ -57,40 +66,18 @@ func isReportSafe(report []string, secondChance bool) bool {
 			} else {
 				// If neither greater nor less than
 				// Report is not safe is this is the second time
-
-				fmt.Println(report, secondChance)
-				if secondChance {
-					report = append(report[:index+1], report[index+2:]...)
-					return isReportSafe(report, false)
-				} else {
-					return false
-				}
-
+				return false
 			}
 		} else if isAsc {
 			if curr > next {
-
-				fmt.Println(report, secondChance)
-				if secondChance {
-					report = append(report[:index+1], report[index+2:]...)
-					return isReportSafe(report, false)
-				} else {
-					return false
-				}
+				return false
 			}
 		} else if isDesc {
 			if curr < next {
-				fmt.Println(report, secondChance)
-				if secondChance {
-					report = append(report[:index+1], report[index+2:]...)
-					return isReportSafe(report, false)
-				} else {
-					return false
-				}
+				return false
 			}
 		}
 	}
-
 	// If we have not returned false yet, it is safe
 	return true
 }
@@ -109,8 +96,14 @@ func main() {
 		line := reader.Text()
 		saniString := strings.Fields(line)
 
-		if isReportSafe(saniString, true) {
-			safety++ //If report is safe increase tracker
+		for index := range len(saniString) {
+			mixed := removeIndex(saniString, index)
+			if isReportSafe(mixed) {
+				fmt.Println(saniString, index)
+				fmt.Println(mixed)
+				safety++ //If report is safe increase tracker
+				break
+			}
 		}
 	}
 
