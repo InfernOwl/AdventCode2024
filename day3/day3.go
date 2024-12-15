@@ -19,8 +19,9 @@ func main() {
 	dat, err := os.Open("../inputs/day3.txt")
 	check(err)
 
-	fmt.Println("Part Two: ", partTwo(dat))
+	//Uncomment whichever part you are running
 	fmt.Println("Part One: ", partOne(dat))
+	//fmt.Println("Part Two: ", partTwo(dat))
 
 }
 
@@ -67,7 +68,6 @@ func partTwo(data *os.File) int {
 	for reader.Scan() {
 		line := reader.Text()
 		newText := reg1.FindAllString(line, -1)
-		fmt.Println(newText)
 		matches = append(matches, newText...)
 	}
 
