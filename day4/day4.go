@@ -29,10 +29,9 @@ func main() {
 		sourceArr = append(sourceArr, strings.Split(line, ""))
 	}
 
-	//fmt.Println(sourceArr[0][len(sourceArr[0])-1])
-
 	//Pass 2D array into partOne and partTwo functions to get solves
-	partOne(sourceArr)
+	//partOne(sourceArr)
+	partTwo(sourceArr)
 }
 
 func partOne(arr [][]string) {
@@ -41,35 +40,50 @@ func partOne(arr [][]string) {
 
 	//Initialize variables
 	patternArr := []string{"X", "M", "A", "S"}
-	interFinds := 0
 	totalFinds := 0
 
 	//Loop through each entry in array
 	//If it matches pattern start, call recursive checkers
 	for y := range arr {
-		for x := range y {
+		for x := range arr {
 			if arr[y][x] == patternArr[0] {
-				interFinds += checkNorth(arr, patternArr, x, y, 0)
-				interFinds += checkSouth(arr, patternArr, x, y, 0)
-				interFinds += checkWest(arr, patternArr, x, y, 0)
-				interFinds += checkEast(arr, patternArr, x, y, 0)
-				interFinds += checkNorthWest(arr, patternArr, x, y, 0)
-				interFinds += checkNorthEast(arr, patternArr, x, y, 0)
-				interFinds += checkSouthWest(arr, patternArr, x, y, 0)
-				interFinds += checkSouthEast(arr, patternArr, x, y, 0)
-				fmt.Println(interFinds)
-				totalFinds += interFinds
+				totalFinds += checkNorth(arr, patternArr, x, y, 0)
+				totalFinds += checkSouth(arr, patternArr, x, y, 0)
+				totalFinds += checkWest(arr, patternArr, x, y, 0)
+				totalFinds += checkEast(arr, patternArr, x, y, 0)
+				totalFinds += checkNorthWest(arr, patternArr, x, y, 0)
+				totalFinds += checkNorthEast(arr, patternArr, x, y, 0)
+				totalFinds += checkSouthWest(arr, patternArr, x, y, 0)
+				totalFinds += checkSouthEast(arr, patternArr, x, y, 0)
 			}
 		}
 	}
 
-	fmt.Println(interFinds)
+	fmt.Println(totalFinds)
 }
 
-/*func partTwo(arr [][]string) {
+func partTwo(arr [][]string) {
+	//Pull 2D array use omnidrectional helper functions to check for 'MAS' and 'SAM'
+	//string appearances in array oriented around 'A'
+
+	//Initialize variables
+	totalFinds := 0
+
+	//Loop through each entry in array
+	//If it matches pattern start, call recursive checkers
+	for y := range arr {
+		for x := range arr {
+			if arr[y][x] == "A" {
+				if leftDiagMas(arr, x, y) && rightDiagMas(arr, x, y) {
+					totalFinds += 1
+				}
+			}
+		}
+	}
+
+	fmt.Println(totalFinds)
 
 }
-*/
 
 //----Omnidirectional recursive 'XMAS' checking functions
 
@@ -81,7 +95,6 @@ func partOne(arr [][]string) {
 //will be written)
 
 func checkNorth(arr [][]string, patternArr []string, xPos int, yPos int, let int) int {
-	fmt.Println(patternArr[let], arr[yPos][xPos])
 	if let < len(patternArr)-1 {
 		if yPos >= 0 && yPos < len(arr) {
 			if xPos >= 0 && xPos < len(arr[yPos]) {
@@ -94,7 +107,7 @@ func checkNorth(arr [][]string, patternArr []string, xPos int, yPos int, let int
 		if yPos >= 0 && yPos < len(arr) {
 			if xPos >= 0 && xPos < len(arr[yPos]) {
 				if arr[yPos][xPos] == patternArr[let] {
-					fmt.Println("MADE IT")
+					fmt.Println("N", "Success")
 					return 1
 				}
 			}
@@ -116,6 +129,7 @@ func checkSouth(arr [][]string, patternArr []string, xPos int, yPos int, let int
 		if yPos >= 0 && yPos < len(arr) {
 			if xPos >= 0 && xPos < len(arr[yPos]) {
 				if arr[yPos][xPos] == patternArr[let] {
+					fmt.Println("S", "Success")
 					return 1
 				}
 			}
@@ -137,6 +151,7 @@ func checkWest(arr [][]string, patternArr []string, xPos int, yPos int, let int)
 		if yPos >= 0 && yPos < len(arr) {
 			if xPos >= 0 && xPos < len(arr[yPos]) {
 				if arr[yPos][xPos] == patternArr[let] {
+					fmt.Println("W", "Success")
 					return 1
 				}
 			}
@@ -158,6 +173,7 @@ func checkEast(arr [][]string, patternArr []string, xPos int, yPos int, let int)
 		if yPos >= 0 && yPos < len(arr) {
 			if xPos >= 0 && xPos < len(arr[yPos]) {
 				if arr[yPos][xPos] == patternArr[let] {
+					fmt.Println("E", "Success")
 					return 1
 				}
 			}
@@ -179,6 +195,7 @@ func checkNorthWest(arr [][]string, patternArr []string, xPos int, yPos int, let
 		if yPos >= 0 && yPos < len(arr) {
 			if xPos >= 0 && xPos < len(arr[yPos]) {
 				if arr[yPos][xPos] == patternArr[let] {
+					fmt.Println("NW", "Success")
 					return 1
 				}
 			}
@@ -200,6 +217,7 @@ func checkNorthEast(arr [][]string, patternArr []string, xPos int, yPos int, let
 		if yPos >= 0 && yPos < len(arr) {
 			if xPos >= 0 && xPos < len(arr[yPos]) {
 				if arr[yPos][xPos] == patternArr[let] {
+					fmt.Println("NE", "Success")
 					return 1
 				}
 			}
@@ -221,6 +239,7 @@ func checkSouthWest(arr [][]string, patternArr []string, xPos int, yPos int, let
 		if yPos >= 0 && yPos < len(arr) {
 			if xPos >= 0 && xPos < len(arr[yPos]) {
 				if arr[yPos][xPos] == patternArr[let] {
+					fmt.Println("SW", "Success")
 					return 1
 				}
 			}
@@ -242,10 +261,56 @@ func checkSouthEast(arr [][]string, patternArr []string, xPos int, yPos int, let
 		if yPos >= 0 && yPos < len(arr) {
 			if xPos >= 0 && xPos < len(arr[yPos]) {
 				if arr[yPos][xPos] == patternArr[let] {
+					fmt.Println("SE", "Success")
 					return 1
 				}
 			}
 		}
 	}
 	return 0
+}
+
+func leftDiagMas(arr [][]string, x int, y int) bool {
+	//Concat top left, center, and bottom right values if within bounds
+	//Compare to 'MAS' and 'SAM'
+	//Return true if they match
+	phrase := ""
+
+	leftBound := x-1 >= 0 && x-1 < len(arr)
+	rightBound := x+1 >= 0 && x+1 < len(arr)
+	topBound := y-1 >= 0 && y-1 < len(arr)
+	bottomBound := y+1 >= 0 && y+1 < len(arr)
+
+	if leftBound && topBound {
+		phrase = phrase + arr[y-1][x-1]
+	}
+
+	phrase = phrase + arr[y][x]
+
+	if rightBound && bottomBound {
+		phrase = phrase + arr[y+1][x+1]
+	}
+
+	return phrase == "MAS" || phrase == "SAM"
+}
+
+func rightDiagMas(arr [][]string, x int, y int) bool {
+	phrase := ""
+
+	leftBound := x-1 >= 0 && x-1 < len(arr)
+	rightBound := x+1 >= 0 && x+1 < len(arr)
+	topBound := y-1 >= 0 && y-1 < len(arr)
+	bottomBound := y+1 >= 0 && y+1 < len(arr)
+
+	if rightBound && topBound {
+		phrase = phrase + arr[y-1][x+1]
+	}
+
+	phrase = phrase + arr[y][x]
+
+	if leftBound && bottomBound {
+		phrase = phrase + arr[y+1][x-1]
+	}
+
+	return phrase == "MAS" || phrase == "SAM"
 }
